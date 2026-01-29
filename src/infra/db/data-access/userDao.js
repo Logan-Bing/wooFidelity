@@ -12,4 +12,13 @@ export default class PsgtUserDao {
                         .where(eq(users.id, id))
         return (user);
     }
+
+    async save(user)
+    {
+        console.log(user)
+        await db
+            .update(users)
+            .set(user)
+            .where(eq(users.username, user.username))
+    }
 }

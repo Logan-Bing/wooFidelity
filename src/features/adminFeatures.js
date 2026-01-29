@@ -15,10 +15,12 @@ export default class AdminFeatures
     async addUserPoints({adminID, userId, points})
     {
         const admin = await this.userDao.find(adminID);
-        if (!admin.isAdmin) throw new Error(`${admin.username} is not an admin`)
+        if (!admin[0].isAdmin) throw new Error(`${admin.username} is not an admin`)
 
         const userDb = await this.userDao.find(userId);
         const userEntity = new User(userDb[0]);
-        return userEntity.addPoints(points);
+        const addedPoints = userEntity.addPoints(points);
+        await this.userDao.save(userEntity);
+        return addedPoints;
     }
 }

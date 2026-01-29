@@ -1,6 +1,8 @@
 
 export default class User
 {
+    MAX_POINTS = 120;
+    MIN_POINTS = 0;
 
     /**
      * @typedef {Object} User
@@ -11,9 +13,8 @@ export default class User
      * @param {number} points 
      */
 
-    constructor({id, username, firstName, email, isAdmin, points})
+    constructor({username, firstName, email, isAdmin, points})
     {
-        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.email = email;
@@ -26,7 +27,16 @@ export default class User
         if (points <= 0) throw new Error("Invalid points input");
         const pointsBeforeAdd = this.points;
         this.points += points;
-        if (points > 120) this.points = 120;
+        if (this.points > this.MAX_POINTS) this.points = this.MAX_POINTS;
         return this.points - pointsBeforeAdd;
+    }
+
+    removePoints(points)
+    {
+        if (points <= 0) throw new Error("Invalid points input");
+        const pointsBeforeRemove = this.points;
+        this.points -= points;
+        if (this.points > this.MIN_POINTS) this.points = this.MIN_POINTS;
+        return pointsBeforeRemove - this.points;
     }
 }
