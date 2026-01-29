@@ -1,16 +1,15 @@
-import PsgtUserDao from "../data-access/userDao";
-import { UserFeatures } from "../../features/userFeatures";
 
 export class userController
 {
-
     constructor(UserFeatures)
     {
-        this.UserFeatures = UserFeatures
+        this.userFeatures = UserFeatures
     }
 
     async view(req, res)
     {
-        
+        const id = parseInt(req.params.id);
+        const user = await this.userFeatures.FindUser(id);
+        res.send(user);
     }
 }
