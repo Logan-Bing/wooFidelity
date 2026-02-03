@@ -13,9 +13,8 @@ export const users = pgTable("users",
         firstName: varchar("first_name", {length: 255}).notNull(),
         points: integer().notNull().default(0),
         isAdmin: boolean("is_admin").default(false),
-        qrToken: integer("qr_token").notNull(),
+        qrToken: integer("qr_token").default(1),
 
-        username: varchar({length: 255}).unique().notNull(),
         email: varchar({length: 255}).unique().notNull(),
         password: varchar({length: 255}).notNull(),
         createdAt: timestamp("created_at").defaultNow()

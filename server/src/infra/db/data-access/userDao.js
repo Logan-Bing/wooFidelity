@@ -13,6 +13,21 @@ export default class PsgtUserDao {
         return (user);
     }
 
+    async create(data)
+    {
+        try 
+        {
+            const newUser = await db
+                            .insert(users)
+                            .values(data)
+            return newUser
+        }
+        catch (error)
+        {
+            return error;
+        }
+    }
+
     async save(user)
     {
         console.log(user)

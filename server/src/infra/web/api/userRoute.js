@@ -15,5 +15,3 @@ server.get("/users/:id", (req, res) =>
         controller.view(req, res);
     }
 )
-
-server.listen({port: 3000});

@@ -12,4 +12,12 @@ export class userController
         const user = await this.userFeatures.FindUser(id);
         res.send(user);
     }
+
+    async create(req, res)
+    {
+        const payload = req.body;
+        const newUser = await this.userFeatures.CreateUser(payload);
+        console.log(newUser);
+        res.send({newUser});
+    }
 }

@@ -14,4 +14,10 @@ export class UserFeatures
         const user = await this.userDao.find(id)
         return user
     }
+
+    async CreateUser(data)
+    {
+        const user = await this.userDao.create(data)
+        return user
+    }
 }
