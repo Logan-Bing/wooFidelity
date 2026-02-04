@@ -42,4 +42,22 @@ export class userController
             res.send({error});
         }
     }
+
+    async login(req, res)
+    {
+        const {email, password} = req.body;
+        try
+        {
+            const user = await this.userFeatures.FindUser(email);
+            const match = await bcrypt.compare(password, user.password);
+            console.log(match);
+        }
+        catch(error)
+        {
+            console.log(error);
+            res.statusCode = 400;
+            res.send({Error: error});
+        }
+        res.send({ok: "200"});
+    }
 }

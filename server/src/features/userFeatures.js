@@ -1,3 +1,4 @@
+import httpError from "../entity/error.js";
 
 export class UserFeatures
 {
@@ -11,8 +12,10 @@ export class UserFeatures
      */
     async FindUser(arg)
     {
-        const user = await this.userDao.find(arg)
-        return user
+        const user = await this.userDao.find(arg);
+        if (!user.length)
+            throw new httpError("Can't find user", 400);
+        return user;
     }
 
     async CreateUser(data)

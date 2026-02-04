@@ -16,3 +16,11 @@ server.route (
         handler: (req, res) => controller.create(req, res)
     }
 )
+
+server.route (
+    {
+        method: "POST",
+        url: "/login",
+        handler: (req, res) => controller.login(req, res)
+    }
+)

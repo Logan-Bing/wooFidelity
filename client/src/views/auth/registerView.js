@@ -1,10 +1,10 @@
-import { callAPI, BASE_API } from "../../infra/repoAuth.js";
+import { callServer } from "../../infra/repoAuth.js";
 
 /**
  * 
  * @param {HTMLElement} root 
  */
-export async function registerView(root)
+export default async function registerView(root)
 {
     root.innerHTML = 
     `
@@ -22,7 +22,7 @@ export async function registerView(root)
     const registerForm = root.querySelector(".register-form");
     registerForm.addEventListener("submit", async (e) => {
        e.preventDefault();
-       
+
        const firstName = root.querySelector(".first-name-input").value;
        const email = root.querySelector(".email-input").value;
        const password = root.querySelector(".password-input").value;
@@ -44,10 +44,10 @@ export async function registerView(root)
             body: JSON.stringify(payload)
        }
 
-       try 
+       try
        {
-            const response = await callAPI(`${BASE_API}register`, params);
-            console.log(response);
+            const response = await callServer("register", params);
+            window.location.replace("http://localhost:5173/home");
        } 
        catch (error) 
        {
