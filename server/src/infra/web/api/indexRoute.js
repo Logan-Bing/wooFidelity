@@ -7,7 +7,7 @@ export const server = fastify();
 
 server.register(fastifySession, {
     sessionName: "session",
-    cookieName: "my-session-cookie",
+    cookieName: "session-cookie",
     key: Buffer.from(process.env.SESSION_KEY, 'hex'),
 })
 

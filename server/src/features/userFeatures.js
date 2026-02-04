@@ -7,11 +7,11 @@ export class UserFeatures
     }
 
     /**
-     * @param {number} id 
+     * @param {any} arg 
      */
-    async FindUser(id)
+    async FindUser(arg)
     {
-        const user = await this.userDao.find(id)
+        const user = await this.userDao.find(arg)
         return user
     }
 

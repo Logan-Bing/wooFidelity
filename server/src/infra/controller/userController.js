@@ -1,3 +1,4 @@
+import bcrypt, {hash} from "bcrypt"
 
 export class userController
 {
@@ -15,9 +16,30 @@ export class userController
 
     async create(req, res)
     {
-        const payload = req.body;
-        const newUser = await this.userFeatures.CreateUser(payload);
-        console.log(newUser);
-        res.send({newUser});
+        try
+        {
+            const {firstName, email, password} = req.body;
+            const salt = 10;
+            const password_hash = await hash(password, salt);
+            const payload =
+            {
+                firstName,
+                email,
+                password: password_hash
+            }
+            await this.userFeatures.CreateUser(payload);
+            const [user] = await this.userFeatures.FindUser(email);
+            req.session.set('user', 
+                {
+                    id: user.id,
+                    firstName,
+                })
+            res.send(user);
+        }
+        catch (error)
+        {
+            console.log(error);
+            res.send({error});
+        }
     }
 }

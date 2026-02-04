@@ -4,28 +4,21 @@ import { eq } from "drizzle-orm"
 
 export default class PsgtUserDao {
 
-    async find(id)
+    async find(arg)
     {
         const user = await db
                         .select()
                         .from(users)
-                        .where(eq(users.id, id))
+                        .where(eq(users.email, arg))
         return (user);
     }
 
     async create(data)
     {
-        try 
-        {
-            const newUser = await db
-                            .insert(users)
-                            .values(data)
-            return newUser
-        }
-        catch (error)
-        {
-            return error;
-        }
+        const newUser = await db
+                        .insert(users)
+                        .values(data)
+        return newUser
     }
 
     async save(user)
