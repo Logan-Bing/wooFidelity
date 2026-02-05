@@ -1,4 +1,4 @@
-import { callServer } from "../../infra/repoAuth.js";
+import { buildRequestParams, callServer } from "../../infra/repoAuth.js";
 
 /**
  * 
@@ -27,31 +27,14 @@ export default async function registerView(root)
        const email = root.querySelector(".email-input").value;
        const password = root.querySelector(".password-input").value;
 
-       const payload =
-       {
-            firstName,
-            email,
-            password
-       }
+       const payload = { firstName, email, password }
+       const params = buildRequestParams("POST", payload);
 
-       const params = 
+       const response = await callServer("register", params);
+       if (!response.ok)
        {
-            method: "POST",
-            headers : {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify(payload)
+           
        }
-
-       try
-       {
-            const response = await callServer("register", params);
-            window.location.replace("http://localhost:5173/home");
-       } 
-       catch (error) 
-       {
-            console.log(error);
-       }
+       window.location.replace("http://localhost:5173/home");
     })
 }

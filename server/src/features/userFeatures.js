@@ -14,7 +14,7 @@ export class UserFeatures
     {
         const user = await this.userDao.find(arg);
         if (!user.length)
-            throw new httpError("Can't find user", 400);
+            throw new httpError("Can't find user", 400, "INVALID_EMAIL");
         return user;
     }
 

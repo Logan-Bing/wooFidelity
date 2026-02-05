@@ -1,4 +1,4 @@
-import { callServer } from "../../infra/repoAuth.js";
+import { buildRequestParams, callServer, } from "../../infra/repoAuth.js";
 
 /**
  * 
@@ -25,26 +25,18 @@ export default async function loginView (root)
         const password = root.querySelector(".password-input").value;
 
         const payload = { email, password}
+        const params = buildRequestParams("POST", payload);
 
-        const params = 
+        const response = await callServer("login", params);
+        if (!response.ok)
         {
-            method: "POST",
-            headers : {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify(payload)
+            if (response.Error.cause === "INVALID_EMAIL")
+                console.log("email invalide"); // change ui
+            if (response.Error.cause === "INVALID_PASSWORD")
+                console.log("password invalide")
         }
-
-        try 
-        {
-            const response = await callServer("login", params);
-            console.log(response);
-        } 
-        catch (error) 
-        {
-            console.log(error);
-        }
+        await response.json();
+        window.location.replace("http://localhost:5173/home");
     });
 
 }
