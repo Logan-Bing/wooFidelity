@@ -1,10 +1,9 @@
 
 export default class httpError extends Error
 {
-    constructor (message, code, cause)
+    constructor (message, statusCode, cause)
     {
-        super(message),
-        this.code = code,
+        super(message, statusCode),
         this.cause = cause;
     }
 }

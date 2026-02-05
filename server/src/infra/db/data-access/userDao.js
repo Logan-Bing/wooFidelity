@@ -23,7 +23,6 @@ export default class PsgtUserDao {
 
     async save(user)
     {
-        console.log(user)
         await db
             .update(users)
             .set(user)

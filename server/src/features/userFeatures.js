@@ -14,13 +14,19 @@ export class UserFeatures
     {
         const user = await this.userDao.find(arg);
         if (!user.length)
-            throw new httpError("Can't find user", 400, "INVALID_EMAIL");
+            throw new Error("INVALID_USER");
         return user;
     }
 
     async CreateUser(data)
     {
-        const user = await this.userDao.create(data)
-        return user
+        try
+        {
+            return await this.userDao.create(data);
+        }
+        catch (error)
+        {
+            throw new Error("DATABASE_ERROR");
+        }
     }
 }

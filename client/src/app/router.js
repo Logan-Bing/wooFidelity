@@ -1,13 +1,14 @@
 import loginView from "../views/auth/loginView.js";
 import registerView from "../views/auth/registerView.js";
-import homeView from "../views/home.js";
+import userView from "../views/home.js";
+import "../style.css";
 
 const app = document.querySelector("#app");
 
 const routes = [
     { path :"/login", mount: loginView},
     { path :"/register", mount: registerView},
-    { path :"/home", mount: homeView}
+    { path :"/user", mount: userView}
 ]
 
 createApp(app, routes);

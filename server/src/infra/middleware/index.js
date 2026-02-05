@@ -24,11 +24,3 @@ server.route (
         handler: (req, res) => controller.login(req, res)
     }
 )
-
-server.route (
-    {
-        method: "GET",
-        url: "/home",
-        handler: (req, res) => controller.home(req, res)
-    }
-)

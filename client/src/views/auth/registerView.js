@@ -1,4 +1,5 @@
 import { buildRequestParams, callServer } from "../../infra/repoAuth.js";
+import { buildFormComponent } from "../../ui/components/formUI.js";
 
 /**
  * 
@@ -6,26 +7,24 @@ import { buildRequestParams, callServer } from "../../infra/repoAuth.js";
  */
 export default async function registerView(root)
 {
-    root.innerHTML = 
-    `
-    <form class="register-form" method="POST">
-        <label>firstName</label>
-        <input class="first-name-input"></input>
-        <label>Email</label>
-        <input class="email-input"></input>
-        <label>Password</label>
-        <input type="password" class="password-input"></input>
-        <button type="submit">Login</button>
-    </form>
-    `
+    const form = buildFormComponent(
+    [
+        {label: "Firstname", input: {name: "firstname", type: "firstname", autocomplete: "given-name", required: "true"}},
+        {label: "Email", input: {name: "email", type: "email", autocomplete: "on", required: "true"}},
+        {label: "Password", input: {name: "password", type: "password", required: "true"}},
+    ],
+        {text: "Register"}
+    )
 
-    const registerForm = root.querySelector(".register-form");
+    root.appendChild(form);
+
+    const registerForm = root.querySelector("#form");
     registerForm.addEventListener("submit", async (e) => {
        e.preventDefault();
 
-       const firstName = root.querySelector(".first-name-input").value;
-       const email = root.querySelector(".email-input").value;
-       const password = root.querySelector(".password-input").value;
+       const firstName = root.querySelector(".input-firstname").value;
+       const email = root.querySelector(".input-email").value;
+       const password = root.querySelector(".input-password").value;
 
        const payload = { firstName, email, password }
        const params = buildRequestParams("POST", payload);
@@ -33,8 +32,13 @@ export default async function registerView(root)
        const response = await callServer("register", params);
        if (!response.ok)
        {
-           
+            const error = await response.json();
+            if (error.message === "DATABASE_ERROR")
+                console.log("Email deja pris");
        }
-       window.location.replace("http://localhost:5173/home");
+       else
+       {
+            window.location.replace(`${window.location.origin}/user`);
+       }
     })
 }

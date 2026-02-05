@@ -1,4 +1,5 @@
 import { buildRequestParams, callServer, } from "../../infra/repoAuth.js";
+import { buildFormComponent } from "../../ui/components/formUI.js";
 
 /**
  * 
@@ -6,37 +7,38 @@ import { buildRequestParams, callServer, } from "../../infra/repoAuth.js";
  */
 export default async function loginView (root)
 {
-    root.innerHTML = 
-        `
-            <form class="login-form" method="POST">
-            <label>Email</label>
-            <input class="email-input"></input>
-            <label>Password</label>
-            <input type="password" class="password-input"></input>
-            <button type="submit">Login</button>
-            </form>
-        `
+    const form = buildFormComponent(
+    [
+        {label: "Email", input: {name: "email", type: "email", autocomplete: "given-email", required: "true"}},
+        {label: "Password", input: {name: "password", type: "password", required: "true"}},
+    ],
+        {text: "Login"}
+    )
 
-    const loginForm = root.querySelector(".login-form");
+    root.appendChild(form);
+
+    const loginForm = root.querySelector("#form");
     loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email = root.querySelector(".email-input").value;
-        const password = root.querySelector(".password-input").value;
+        const email = root.querySelector(".input-email").value;
+        const password = root.querySelector(".input-password").value;
 
-        const payload = { email, password}
+        const payload = { email, password};
         const params = buildRequestParams("POST", payload);
 
         const response = await callServer("login", params);
         if (!response.ok)
         {
-            if (response.Error.cause === "INVALID_EMAIL")
-                console.log("email invalide"); // change ui
-            if (response.Error.cause === "INVALID_PASSWORD")
-                console.log("password invalide")
+            const error = await response.json();
+            if (error.message === "INVALID_USER")
+                console.log("Erreur de connexion mail ou mdp incorrect");
+            return;
         }
-        await response.json();
-        window.location.replace("http://localhost:5173/home");
+        const {user} = await response.json();
+        if (!user.isAdmin)
+            window.location.replace(`${window.location.origin}/user`);
+        else
+            window.location.replace(`${window.location.origin}/admin`);
     });
-
 }

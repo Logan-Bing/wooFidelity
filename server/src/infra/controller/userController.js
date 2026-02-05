@@ -1,5 +1,4 @@
 import bcrypt, {hash} from "bcrypt"
-import httpError from "../../entity/error.js";
 
 export class userController
 {
@@ -14,6 +13,8 @@ export class userController
         {
             id: user.id,
             firstName: user.firstName,
+            points: user.points,
+            isAdmin: user.isAdmin
         })
     }
 
@@ -45,7 +46,8 @@ export class userController
         catch (error)
         {
             console.log(error);
-            res.send({error});
+            res.statusCode = 400;
+            res.send(error);
         }
     }
 
@@ -57,23 +59,16 @@ export class userController
             const [user] = await this.userFeatures.FindUser(email);
             const match = await bcrypt.compare(password, user.password);
             if (!match)
-                throw new httpError("Password do not match", 400, "INVALID_PASSWORD");
+                throw new Error("INVALID_USER");
             this.setUserSession(req, user);
             res.send({user});
         }
         catch(error)
         {
             console.log(error);
-            res.statusCode = error.code;
-            res.send({Error: error});
+            res.statusCode = 400;
+            res.send(error);
         }
         res.send({ok: "200"});
-    }
-
-    async home(req, res)
-    {
-        const user = req.session.get('user');
-        console.log(user);
-        res.send(user);
     }
 }
