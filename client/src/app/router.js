@@ -6,9 +6,9 @@ import "../style.css";
 const app = document.querySelector("#app");
 
 const routes = [
-    { path :"/login", mount: loginView},
-    { path :"/register", mount: registerView},
-    { path :"/user", mount: userView}
+  { path: "/login", mount: loginView },
+  { path: "/register", mount: registerView },
+  { path: "/user", mount: userView }
 ]
 
 createApp(app, routes);
@@ -18,9 +18,8 @@ createApp(app, routes);
  * @param {HTMLElement} root
  * @param {Array} routes
  */
-async function createApp(root, routes)
-{
-    const currentPath = window.location.pathname;
-    const match = routes.find((route) => route.path === currentPath);
-    await match.mount(root);
+async function createApp(root, routes) {
+  const currentPath = window.location.pathname;
+  const match = routes.find((route) => route.path === currentPath);
+  await match.mount(root);
 }
